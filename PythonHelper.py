@@ -53,6 +53,9 @@ for word in wordList:
 #Dico to list
 keys = wordDico.keys()
 
+#Dico get value
+dico.get(ext[1], "UNKNOWN")
+
 
 ##math
 #modulo
