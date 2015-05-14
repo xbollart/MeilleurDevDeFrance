@@ -1,0 +1,61 @@
+private void LoadPhyEtfCoefFile(Dictionary<string, EtfComposition> compoDico,string fileKey)
+{
+            string physicalCoefFilePath = "";
+            if (EtfModule.Settings != null && EtfModule.Settings.ContainsKey(fileKey))
+            {
+                physicalCoefFilePath = EtfModule.Settings[fileKey];
+            }
+
+            if (!File.Exists(physicalCoefFilePath))
+            {
+                MessageBox.Show("PhysicalCoef file is missing {0}", physicalCoefFilePath);
+                return;
+            }
+
+            if(compoDico.Count > 0)
+                compoDico.Clear();
+
+            try
+            {
+                bool isHeader = true;
+                var headers = new Dictionary<string, int>();
+                var fs = new FileStream(physicalCoefFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                var reader = new StreamReader(fs);
+
+                using (reader)
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        var line = reader.ReadLine();
+                        var values = line.Split(',');
+
+                        if (isHeader)
+                        {
+                            isHeader = false;
+                            for (int i = 0; i < values.Length; i++)
+                            {
+                                if (!headers.ContainsKey(values[i]))
+                                {
+                                    headers.Add(values[i], i);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            string etfName = values[headers["ETF_NAME"]];
+                            if (!compoDico.ContainsKey(etfName))
+                            {
+                                compoDico.Add(etfName, new EtfComposition(headers, values));
+                            }
+                            else
+                            {
+                                compoDico[etfName].LoadData(headers, values);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Issue while loading PhysicalEtfCoef.csv");
+            }}
