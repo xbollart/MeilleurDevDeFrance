@@ -1,3 +1,7 @@
+
+# run program with stdin stdout
+python main.py < input.txt > output.txt
+
 ## Reader
 #open for reading
 file = open('input1.txt','rt')
