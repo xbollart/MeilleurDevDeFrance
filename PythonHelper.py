@@ -18,6 +18,9 @@ prices = file.readline().split(' ')
 #read line and convert to int
 cash = int(file.readline())
 
+# remove \n on string
+str = line.rstrip('\n')
+
 ##List
 #init empty
 liste = []
