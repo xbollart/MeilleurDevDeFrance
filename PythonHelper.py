@@ -25,6 +25,9 @@ str = line.rstrip('\n')
 #init empty
 liste = []
 
+#convert str array to int array
+desired_array = [int(numeric_string) for numeric_string in current_array]
+
 #init with values
 color = ['orange','jaune','vert', 'rose', 'bleu', 'violet']
 
